@@ -17,6 +17,9 @@ class _HomePageState extends State<HomePage> {
     ['Task 3', false],
   ];
 
+  // controller for the text field
+  final _controller = TextEditingController();
+
   // function to change the checkbox value
   void checkBoxChanged(bool? value, int index) {
     setState(() {
@@ -24,12 +27,25 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // function to save the new task
+  void saveNewTask() {
+    setState(() {
+      toDoList.add([_controller.text, false]);
+    });
+    _controller.clear();
+    Navigator.of(context).pop();
+  }
+
   // function to create a new task
   void createNewTask() {
     showDialog(
       context: context,
       builder: (context) {
-        return DialogBox();
+        return DialogBox(
+          controller: _controller,
+          onSave: saveNewTask,
+          onCancel: () => Navigator.of(context).pop(),
+        );
       },
     );
   }
